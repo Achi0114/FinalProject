@@ -13,8 +13,7 @@ def web3_get(pt_address):
     # Fill in your infura API key here
     url = "https://d539-2001-44c8-4610-326f-80b7-e289-4217-de24.ap.ngrok.io"
     web3 = Web3(Web3.HTTPProvider(url))
-    abi = json.loads("""
-	[
+    abi = json.loads("""[
 	{
 		"inputs": [
 			{
@@ -44,6 +43,11 @@ def web3_get(pt_address):
 				"internalType": "address",
 				"name": "id",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "HN",
+				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
@@ -109,6 +113,11 @@ def web3_get(pt_address):
 					},
 					{
 						"internalType": "uint256",
+						"name": "HN",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "temp",
 						"type": "uint256"
 					},
@@ -154,7 +163,7 @@ def web3_get(pt_address):
 
     pt_address = "0x476579e75d2dDd84f2A7b55261558d78aeeb54A2"
 
-    abi_address = "0x68D75e01fcAE9df66056e632f890A4825fBF38F0"
+    abi_address = "0xCE0f0F6817b0f1b3781bE15e3bf94eD6c24463DE"
     web3.eth.defaultAccount = web3.eth.accounts[0]
     contract = web3.eth.contract(address=abi_address, abi=abi)
     pt_info = contract.functions.getPatient(pt_address).call()
@@ -184,10 +193,11 @@ def web3_get(pt_address):
         }
         """
         json_vs = json.loads(vs)
+        json_vs['temperature'] = i[2]
         json_vs['temperature'] = i[1]
-        json_vs['heartrate'] = i[2]
-        json_vs['spo2'] = i[3]
-        json_vs['timestamp'] = i[4]
+        json_vs['heartrate'] = i[3]
+        json_vs['spo2'] = i[4]
+        json_vs['HN'] = i[2]
         json_pt['data'].append(json_vs)
     return json_pt
 
